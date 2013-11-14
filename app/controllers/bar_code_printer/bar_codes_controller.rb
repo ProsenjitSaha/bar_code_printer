@@ -10,5 +10,9 @@ module BarCodePrinter
       @bar_code_image = bar_code.to_png
       render :show, layout: false
     end
+
+    def master_picklist
+      render :master_picklist, layout: false
+    end
   end
 end

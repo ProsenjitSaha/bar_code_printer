@@ -1,0 +1,50 @@
+<html>
+<head>
+  <style>
+    html, body {
+      margin:0px;
+      padding:0px;
+    }
+    .td-style {
+      border-bottom: 1px solid #CCCCCC;
+      padding: 15px 25px;
+    }
+    .barcode_icon {
+      width: 250px; 
+      height: 60px; 
+     }
+  </style>
+</head>
+<body onload="window.print();">
+  <div id="wrapper">
+    <div id="content">
+      <table width="100%">
+      <% params[:batch_json].each do |row| %>
+        <tr>
+          <td valign="top" class="td-style">
+        <% if row["product_image"] %>
+          <%= image_tag(row["product_image"]) %>
+        <% end %>        
+        </td>
+          <td valign="top" class="td-style">
+        <% if row["order_id"] %>
+          <%= bar_code_image(row["order_id"]) %><br/>
+          <label style="">Order ID: <%= row["order_id"] %></label>
+        <% end %>
+          </td>
+          <td valign="top" class="td-style">
+        <% if row["shipment_id"] %>
+          <%= bar_code_image(row["shipment_id"]) %><br/>
+          <label style="margin-left: 25px; font-size: 12pt;">Shipment ID: <%= row["shipment_id"] %></label>
+        <% end %>
+          </td>
+          <td valign="top" class="td-style">
+            <%= bar_code_image(row["order_id"]) %><br/>
+            <label style="margin-left: 25px; font-size: 12pt;">SKU: <%= row["sku"] %></label>
+          </td>
+          </tr>
+      <% end if params[:batch_json].present? %>
+      </table>
+    </div>
+  </div>
+</body>
