@@ -20,8 +20,22 @@
       <label style="margin-left: 25px; font-size: 48pt;"><%= @first_line_text %></label><br/>
       <label style="margin-left: 25px; font-size: 48pt;"><%= @second_line_text %></label><br/>
       <label style="margin-left: 25px; font-size: 72pt;"><%= @bar_code_value %></label><br/>
+      <% if @bar_code_image %>
       <img src='<%= "data:image/png;base64,#{Base64.encode64(@bar_code_image)}" %>'
-           style="width: 95%; height: 20%; display:block;" ></img>
+           style="width: 95%; height: 20%; display:block;" ></img><br/>
+      <% end %>
+
+      <% if @item_code_image %>
+        <label style="margin-left: 25px; font-size: 60pt;">Item: <%= params[:item_id] %></label><br/>
+        <img src='<%= "data:image/png;base64,#{Base64.encode64(@item_code_image)}" %>'
+           style="width: 95%; height: 20%; display:block;" ></img><br/>
+      <% end %>
+
+      <% if @consignment_code_image %>
+        <label style="margin-left: 25px; font-size: 60pt;">Consignment: <%= params[:consignment_id] %></label><br/>
+        <img src='<%= "data:image/png;base64,#{Base64.encode64(@consignment_code_image)}" %>'
+             style="width: 95%; height: 20%; display:block;" ></img><br/>
+      <% end %>
     </div>
   </div>
 </body>
