@@ -20,6 +20,10 @@
       <label style="margin-left: 25px; font-size: 48pt;"><%= @first_line_text %></label><br/>
       <label style="margin-left: 25px; font-size: 48pt;"><%= @second_line_text %></label><br/>
       <label style="margin-left: 25px; font-size: 72pt;"><%= @bar_code_value %></label><br/>
+      <% if params[:in_room_pic] %>
+        <label style="margin-left: 25px; font-size: 72pt;"><%= "In Room Pic: " + params[:in_room_pic] %></label><br/>
+      <% end %>
+      
       <% if @bar_code_image %>
       <img src='<%= "data:image/png;base64,#{Base64.encode64(@bar_code_image)}" %>'
            style="width: 95%; height: 20%; display:block;" ></img><br/>
