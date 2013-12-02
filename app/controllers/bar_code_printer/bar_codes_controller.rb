@@ -25,6 +25,10 @@ module BarCodePrinter
     end
 
     def master_picklist
+      @no_of_orders = params[:batch_json].collect{ |k| k[:order_number]}.uniq.count
+      @no_of_items = params[:batch_json].collect{ |k| k[:product_name]}.count
+      @no_of_shipments = params[:batch_json].collect{ |k| k[:shipment_number]}.uniq.count
+      
       render :master_picklist, layout: false
     end
   end
