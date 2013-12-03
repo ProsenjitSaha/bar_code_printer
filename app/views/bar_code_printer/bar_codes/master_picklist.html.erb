@@ -2,97 +2,173 @@
 <head>
   <title><%= params[:batch_json][:page_title] %></title>
   <style>
-    html, body {
-      margin:0px;
-      padding:0px;
+    * {
+      margin:0;
+      padding:0;
+      
     }
-    .td-style {
-      border-bottom: 1px solid #CCCCCC;
-      padding: 15px 25px;
+    body {
+    font-family: arial;
+    font-size:14px;
+    }
+    .master-picklist{
+     padding:15px;
+    }
+    .picklist-heading{
+      font-size: 30px;
+      font-weight: normal;
+      margin: 5px 0 30px;
+    } 
+    .picklist-heading span{
+      font-size: 24px;
+    }
+    .text-right{
+      text-align: right;
+    }
+    .text-left{
+      text-align: left;
+    }
+    .text-center{
       text-align: center;
     }
-    .barcode_icon {
-      width: 250px; 
+    .header-list td, .search-info td {
+      padding: 5px 0;
+    }
+    .header-list tr:first-child td.text-right{
+      font-size: 30px;
+    }
+    .header-list tr:first-child td.text-right span{
+      font-size: 22px;
+    }
+    .header-list tr:first-child ~ tr td.text-right span{
+       font-size: 12px;
+    }
+    .search-info{
+      border-bottom: 2px solid #000000;
+    } 
+    .label{
+      display: inline-block;
+      font-size: 20px;
+      margin-right: 25px;
+      width: 175px;
+    }
+    .product-info{
+      border-top: 2px solid #000000;
+    }
+
+    .product-info td{
+      border-bottom: 2px solid #000000;
+      padding: 15px 12px;
+    }
+    .barcode-icon{
+      width: 200px; 
       height: 60px; 
-     }
+    }
+
+    @media print{
+      body, .product-info, .product-info strong{
+       font-size:10pt;
+      }
+      @page{
+        margin: 0.08in;
+      }
+     .barcode-icon {
+       width:90%;
+       height:30px;
+      }
+      .product-info td {
+        padding: 0.08in;
+      }
+      .header-list tr:first-child td.text-right{
+        font-size: 16pt;
+      }
+      .header-list tr:first-child td.text-right span{
+        font-size: 12pt;
+      }
+      .label {
+        font-size: 12pt;
+        margin-right: 0.05in;
+      }
+      .picklist-heading{
+        font-size: 16pt;
+      } 
+      .picklist-heading span{
+        font-size: 12pt;
+      }
+    }
   </style>
 </head>
 <body onload="window.print();">
-  <h2>Master Pick List Name: <%= params[:batch_json][:page_title] %></h2>
-  <div>
-    <table style="float:right;">
-      <tr>
-        <td><b>Master Pick List ID:</b> <%= params[:batch_json][:batch_id] %></td>
-      </tr>
-      <tr>
-        <td><b>Date Created:</b> <%= params[:batch_json][:date_created] if params[:batch_json][:date_created].present? %></td>
-      </tr>
-      <tr>
-        <td><b>Date Printed:</b> <%= params[:batch_json][:date_printed] if params[:batch_json][:date_printed].present? %></td>
-      </tr>
-    </table>
-  </div>
+  <div class="master-picklist">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" class="header-list">
+    <tr>
+      <td align="left" valign="top" rowspan="3"><%= image_tag("spree_50.png") %></td>
+      <td class="text-right">Master Pick List ID: <span><%= params[:batch_json][:batch_id] %></span></td>
+    </tr>
+    <tr>
+      <td class="text-right" valign="middle"><strong class="label">Date Created:</strong> <span><%= time_format(params[:batch_json][:date_created]) %></span></td>
+    </tr>
+    <tr>
+      <td class="text-right"><strong class="label">Date Printed:</strong> <span><%= time_format(params[:batch_json][:date_printed]) %></span></td>
+    </tr>
+  </table>
+  <h2 class="picklist-heading">Master Pick List Name: <span><%= params[:batch_json][:page_title] %></span></h2>
 
-  <div>
-    <table style="width:100%">
-      <tr>
-        <td>
-        
-        </td>
-      <td>
-        <table style="width:100%">
-          <tr>
-            <td style="text-align:right;"><b>No Of Items: </b><%= @no_of_items %></td>
-          </tr>
-          <tr>
-            <td style="text-align:right;"><b>No of Packages: </b><%= @no_of_shipments %></td>
-          </tr>
-          <tr>
-            <td  style="text-align:right;"><b>No of Orders: </b><%= @no_of_orders %></td>
-          </tr>
-        </table>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" class="search-info">
+    <tr>
+      <td></td>
+      <td class="text-right"><strong class="label">No Of Items: </strong><%= @no_of_items %></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td class="text-right"><strong class="label">No of Packages:</strong><%= @no_of_shipments %></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td class="text-right"><strong class="label">No of Orders: </strong><%= @no_of_orders %></td>
+    </tr>
+  </table><br/><br/>
+
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" class="product-info">
+    <% params[:batch_json][:item].each do |row| %>
+    <tr>
+      <td valign="top">
+        <% if row["product_image"] %>
+        <%= image_tag(row["product_image"]) %>
+        <% end %>        
       </td>
-      </tr>
-    </table>
-  </div>
+      <td valign="top">
+        <%= row["product_name"] %><br/><br/>
+        <%= row["taxon_name"] %>
+      </td>
+      <td valign="top" class="text-right">
+        <%= row["designer_name"] %><br/><br/>
+        <%= params[:batch_json][:warehouse] %>
+      </td>
+      <td valign="top" class="text-center">
+        <% if row["order_number"] %>
+        <%= bar_code_image(row["order_number"]) %><br/>
+        <strong><%= row["order_number"] %></strong>
+        <% end %>
+      </td>
+      <td valign="top" class="text-center">
+        <% if row["shipment_number"] %>
+        <br/><br/>
+        <strong><%= row["shipment_number"] %></strong><br/>
+        <%= bar_code_image(row["shipment_number"]) %>
+        <% end %>
+      </td>
+      <td valign="top" class="text-center">
+        <%= bar_code_image(row["sku"]) %><br/>
+        <strong><%= row["sku"] %></strong>
+      </td>
+      <td valign="top" class="text-center">
+        <br/><br/>
+        <strong>Location</strong><br/>
 
-  <div id="wrapper">
-    <div id="content">
-      <table width="100%">
-        <% params[:batch_json][:item].each do |row| %>
-        <tr>
-          <td valign="top" class="td-style">
-            <% if row["product_image"] %>
-            <%= image_tag(row["product_image"]) %>
-            <% end %>        
-          </td>
-          <td>
-            <b>Product Name:</b> <%= row["product_name"] %><br/>
-            <b>Taxon:</b> <%= row["taxon_name"] %>
-          </td>
-          <td valign="top" class="td-style">
-            <b>Designer:</b> <%= row["designer_name"] %><br/>
-            <b>Warehouse:</b> <%= params[:batch_json][:warehouse] %>
-          </td>
-          <td valign="top" class="td-style">
-            <% if row["order_number"] %>
-            <%= bar_code_image(row["order_number"]) %><br/>
-            <strong><%= row["order_number"] %></strong>
-            <% end %>
-          </td>
-          <td valign="top" class="td-style">
-            <% if row["shipment_number"] %>
-            <strong style="font-size: 12pt;"><%= row["shipment_number"] %></strong>
-            <%= bar_code_image(row["shipment_number"]) %><br/>
-            <% end %>
-          </td>
-          <td valign="top" class="td-style">
-            <%= bar_code_image(row["sku"]) %><br/>
-            <strong style="font-size: 12pt;">SKU: <%= row["sku"] %></strong>
-          </td>
-        </tr>
-        <% end if params[:batch_json][:item].present? %>
-      </table>
-    </div>
+      </td>
+    </tr>
+    <% end if params[:batch_json][:item].present? %>
+  </table>
   </div>
 </body>
