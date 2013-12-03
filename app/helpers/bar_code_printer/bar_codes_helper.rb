@@ -8,8 +8,7 @@ module BarCodePrinter
     end
 
     def time_format(time)
-      t = time.to_date
-      t.strftime("%m/%d/%Y") + " " + t.strftime("at %I:%M%p") if t
+      Time.parse(time).in_time_zone("Pacific Time (US & Canada)").strftime("%m/%d/%Y at %I:%M%P") if time.present?
     end
   end
 end
