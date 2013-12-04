@@ -58,7 +58,10 @@
 
     .product-info td{
       border-bottom: 2px solid #000000;
-      padding: 15px 12px;
+      padding: 10px 8px;
+    }
+    .product-info td:nth-child(3){
+      min-width:160px;
     }
     .barcode-icon{
       width: 200px; 
@@ -70,14 +73,14 @@
        font-size:10pt;
       }
       @page{
-        margin: 0.08in;
+       margin: 0.4in 0.08in;
       }
      .barcode-icon {
        width:90%;
        height:30px;
       }
       .product-info td {
-        padding: 0.08in;
+        padding: 0.08in 0.02in;
       }
       .header-list tr:first-child td.text-right{
         font-size: 16pt;
@@ -94,6 +97,9 @@
       } 
       .picklist-heading span{
         font-size: 12pt;
+      }
+      .product-info tr{
+        page-break-inside:avoid;
       }
     }
   </style>
@@ -138,6 +144,7 @@
         <% end %>        
       </td>
       <td valign="top">
+        <%= row["sku"] %><br/>
         <%= row["product_name"] %><br/><br/>
         <%= row["taxon_name"] %>
       </td>
@@ -157,10 +164,6 @@
         <strong><%= row["shipment_number"] %></strong><br/>
         <%= bar_code_image(row["shipment_number"]) %>
         <% end %>
-      </td>
-      <td valign="top" class="text-center">
-        <%= bar_code_image(row["sku"]) %><br/>
-        <strong><%= row["sku"] %></strong>
       </td>
       <td valign="top" class="text-center">
         <br/><br/>
