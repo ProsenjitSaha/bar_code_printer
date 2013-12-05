@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title><%= params[:batch_json][:page_title] %></title>
+  <title><%= @batch_json["page_title"] %></title>
   <style>
     * {
       margin:0;
@@ -109,16 +109,16 @@
   <table width="100%" cellpadding="0" cellspacing="0" border="0" class="header-list">
     <tr>
       <td align="left" valign="top" rowspan="3"><%= image_tag("spree_50.png") %></td>
-      <td class="text-right">Master Pick List ID: <span><%= params[:batch_json][:batch_id] %></span></td>
+      <td class="text-right">Master Pick List ID: <span><%= @batch_json["batch_id"] %></span></td>
     </tr>
     <tr>
-      <td class="text-right" valign="middle"><strong class="label">Date Created:</strong> <span><%= time_format(params[:batch_json][:date_created]) %></span></td>
+      <td class="text-right" valign="middle"><strong class="label">Date Created:</strong> <span><%= time_format(@batch_json["date_created"]) %></span></td>
     </tr>
     <tr>
-      <td class="text-right"><strong class="label">Date Printed:</strong> <span><%= time_format(params[:batch_json][:date_printed]) %></span></td>
+      <td class="text-right"><strong class="label">Date Printed:</strong> <span><%= time_format(@batch_json["date_printed"]) %></span></td>
     </tr>
   </table>
-  <h2 class="picklist-heading">Master Pick List Name: <span><%= params[:batch_json][:page_title] %></span></h2>
+  <h2 class="picklist-heading">Master Pick List Name: <span><%= @batch_json["page_title"] %></span></h2>
 
   <table width="100%" cellpadding="0" cellspacing="0" border="0" class="search-info">
     <tr>
@@ -136,7 +136,7 @@
   </table><br/><br/>
 
   <table width="100%" cellpadding="0" cellspacing="0" border="0" class="product-info">
-    <% params[:batch_json][:item].each do |row| %>
+    <% @batch_json["item"].each do |row| %>
     <tr>
       <td valign="top">
         <% if row["product_image"] %>
@@ -150,7 +150,7 @@
       </td>
       <td valign="top" class="text-right">
         <%= row["designer_name"] %><br/><br/>
-        <%= params[:batch_json][:warehouse] %>
+        <%= @batch_json["warehouse"] %>
       </td>
       <td valign="top" class="text-center">
         <% if row["order_number"] %>
@@ -171,7 +171,7 @@
 
       </td>
     </tr>
-    <% end if params[:batch_json][:item].present? %>
+    <% end if @batch_json["item"].present? %>
   </table>
   </div>
 </body>
