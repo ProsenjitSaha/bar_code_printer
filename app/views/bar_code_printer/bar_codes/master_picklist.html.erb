@@ -67,7 +67,9 @@
       width: 200px; 
       height: 60px; 
     }
-
+    .sku{
+      font-size: 16px;
+    }
     @media print{
       body, .product-info, .product-info strong{
        font-size:10pt;
@@ -144,7 +146,7 @@
         <% end %>        
       </td>
       <td valign="top">
-        <%= row["sku"] %><br/>
+        <span class="sku"><strong><%= row["sku"] %></strong></span><br/>
         <%= row["product_name"] %><br/><br/>
         <%= row["taxon_name"] %>
       </td>
