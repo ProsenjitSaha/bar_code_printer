@@ -157,7 +157,7 @@
       </td>
       <td valign="top" class="text-center">
         <% if row["order_number"] %>
-          <%= bar_code_image(row["order_number"]) %><br/>
+          <img src="<%= aws_barcode_url("orders", row["order_number"]) %>" class="barcode-icon" /><br/>
           <strong><%= row["order_number"] %></strong>
         <% end %>
       </td>
@@ -165,7 +165,7 @@
         <% if row["shipment_number"] %>
           <br/><br/>
           <strong><%= row["shipment_number"] %></strong><br/>
-          <%= bar_code_image(row["shipment_number"]) %>
+          <img src="<%= aws_barcode_url("shipments", row["shipment_number"]) %>" class="barcode-icon" />
         <% end %>
       </td>
       <td valign="top" class="text-center">
