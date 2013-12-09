@@ -68,7 +68,7 @@
       height: 60px; 
     }
     .sku{
-      font-size: 16px;
+      font-size: 18px;
     }
     @media print{
       body, .product-info, .product-info strong{
@@ -83,6 +83,9 @@
       }
       .product-info td {
         padding: 0.08in 0.02in;
+      }
+      .sku {
+        font-size: 18pt;
       }
       .header-list tr:first-child td.text-right{
         font-size: 16pt;
@@ -141,9 +144,7 @@
     <% @batch_json["item"].each do |row| %>
     <tr>
       <td valign="top">
-        <% if row["product_image"] %>
-        <%= image_tag(row["product_image"]) %>
-        <% end %>        
+        <%= image_tag(row["product_image"]) if row["product_image"] %>
       </td>
       <td valign="top">
         <span class="sku"><strong><%= row["sku"] %></strong></span><br/>
@@ -156,15 +157,15 @@
       </td>
       <td valign="top" class="text-center">
         <% if row["order_number"] %>
-        <%= bar_code_image(row["order_number"]) %><br/>
-        <strong><%= row["order_number"] %></strong>
+          <%= bar_code_image(row["order_number"]) %><br/>
+          <strong><%= row["order_number"] %></strong>
         <% end %>
       </td>
       <td valign="top" class="text-center">
         <% if row["shipment_number"] %>
-        <br/><br/>
-        <strong><%= row["shipment_number"] %></strong><br/>
-        <%= bar_code_image(row["shipment_number"]) %>
+          <br/><br/>
+          <strong><%= row["shipment_number"] %></strong><br/>
+          <%= bar_code_image(row["shipment_number"]) %>
         <% end %>
       </td>
       <td valign="top" class="text-center">
