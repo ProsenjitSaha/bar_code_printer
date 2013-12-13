@@ -1,6 +1,10 @@
 module BarCodePrinter
   module BarCodesHelper
 
+    def aws_barcode_url(type, text)
+      "https://trr-shipment-barcode-#{Rails.env}.s3.amazonaws.com/#{type}/#{text}.png"
+    end
+
     def bar_code_image(text)
       bar_code = Barby::Code39.new(text)
       bar_code_image = bar_code.to_png
