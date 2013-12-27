@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<head>
+  <title>Print Item Label</title>
+  <style>
+    * {
+      margin:0;
+      padding:0;
+    }
+    body {
+      font-family:Arial, Helvetica, sans-serif;
+      font-size:12px;
+    }
+    .text-center {
+      text-align:center;
+    }
+    .text-right {
+      text-align:right;
+    }
+    .valign-m{
+      vertical-align: middle;
+    }
+    table {
+      border-collapse:collapse;
+      border-spacing:0;
+      width:100%;
+      height: 100%;
+      font-size:12px;
+    }
+    td {
+      padding:2px 4px;
+      vertical-align:top;
+    }
+    .main-table {
+      border:1px solid #000000;
+      width:320px;
+      height:240px;
+      margin:0 auto;
+    }
+    .main-table tbody tr:first-child td[colspan="2"], .item-info {
+      padding:0;
+    }
+    .main-table tbody tr:first-child td[colspan="2"] td {
+      border-bottom:1px solid #000000;
+    }
+    .main-table > tbody > tr:first-child + tr > td:first-child {
+      border-right:1px solid #000000;
+    }
+    .item-label-header td h3, .item-label-header td strong{
+      color: #fff;
+    }
+    .item-label-header tr td:nth-child(1), .item-label-header tr td:nth-child(3) {
+      width:10%;
+    }
+    .item-label-header tr td:nth-child(2) {
+      width:80%;
+    }
+    td.room-pic {
+      border-width:1px 0 0 1px;
+      border-style:solid;
+      border-color:#000000;
+    }
+    .item-info table tr:last-child td{
+      padding: 2px 5px; 
+    }
+    .regular{
+      background: #4bacc6;
+    }
+    .marquis{
+      background: #789440;
+    }
+    .marquis + tr > td:first-child{
+      width:100px;
+    }
+    .merchandising{
+      background: #d9958f;
+    }
+    .item-label-header td.high-value strong{
+      color: #ffc010;
+    }
+    .item-photo{
+      width: 90px;
+      height: auto;
+    }
+    input[type="checkbox"] {
+      vertical-align: middle;
+    }
+    .item-info tbody tr:first-child td:first-child {
+      font-size: 17px;
+    }
+    .item-info tbody tr:last-child td:first-child {
+      font-size: 11px;
+    }
+  </style>
+</head>
+<body onload="window.print();">
+  <div>
+    <table class="main-table">
+      <tr class="<%= params[:priority_type].downcase %>">
+        <td colspan="2"  class="item-label-header">
+          <table>
+            <tr>
+              <td class="high-value">
+                <strong>
+                  <%= "HV" if params[:high_value] == 'true' %>
+                </strong>
+              </td>  
+              <td class="text-center">
+                <h3><%= params[:priority_type] %></h3>
+              </td>
+              <td>
+                <strong>
+                  <%= "<strong style='color:red;'>R</strong>".html_safe if params[:rejected] == 'true' %>
+                  <%= "<strong>A</strong>".html_safe if params[:accepted] == 'true' %>
+                </strong>
+              </td>
+          </table>
+        </td>  
+      </tr>
+      <tr>
+        <td class="text-center">
+          <img src="<%= aws_barcode_url('consignment_items', params[:item_id]) %>" height=35 width=90><br/>
+          <span>Item ID: <%= params[:item_id] %></span>
+          <%= image_tag(params[:item_photo] ? params[:item_photo] : 'missing.png', class: 'item-photo') %><br/>
+          <span><%= params[:lead_type] %></span>
+        </td>
+        <td class="item-info">
+          <table>
+            <tr>
+              <td class="text-center valign-m">
+                <strong><%= params[:item_sku] if params[:item_sku] %></strong>
+              </td>
+              <td class="text-center">
+                <img src="<%= params[:item_sku] ? aws_barcode_url('consignment_item_skus', params[:item_sku]) :  '/assets/transparent_placeholder.png' %>" height=35 width=90><br/>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" class="text-right">
+                <span><%= params[:designer_name] %></span><br/>
+                <span><%= params[:item_type_name] %></span>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <label><%= check_box_tag "authenticate", "yes", (params[:authenticate] == "true"), disabled: true %> Authenticate</label><br/>
+                <label><%= check_box_tag "appraisal", "yes", (params[:appraisal] == "true"), disabled: true %> Appraisal</label><br />
+                <label><%= check_box_tag "price_approval", "yes", (params[:price_approval] == "true"), disabled: true %> Price Approval</label><br/>
+                <label><%= check_box_tag "room_pic", "yes", (params[:room_pic] == "true"), disabled: true %> In Room Pic</label>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center valign-m">
+                <span><%= params[:consignor_name] %></span>
+              </td>
+              <td class="text-center">
+                <span>Consignment: <br/><%= params[:consignment_id] %></span><br/>
+                <img src="<%= aws_barcode_url('consignments', params[:consignment_id]) %>" height=35 width=90>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+
